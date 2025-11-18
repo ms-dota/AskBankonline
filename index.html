@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
-        /* الخط العربي */
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 
         * {
@@ -18,10 +17,9 @@
         }
 
         :root {
-            /* Light Mode */
             --font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
+            --bg-primary: #ffffff;      
+            --bg-secondary: #f0f0f0;    
             --text-primary: #1a1a1a;
             --text-secondary: #666666;
             --accent: #4a90e2; 
@@ -31,7 +29,6 @@
         }
 
         [data-theme="dark"] {
-            /* Dark Mode (Default) */
             --bg-primary: #1a1a1a;
             --bg-secondary: #2d2d2d;
             --text-primary: #ffffff;
@@ -44,8 +41,8 @@
 
         body {
             font-family: var(--font-family);
-            background-color: var(--bg-primary); /* تم التعديل */
-            color: var(--text-primary); /* تم التعديل */
+            background-color: var(--bg-primary); 
+            color: var(--text-primary); 
             transition: background-color 0.3s, color 0.3s;
             min-height: 100vh;
             padding: 20px 0 0;
@@ -93,7 +90,7 @@
         }
 
         .section {
-            background: var(--bg-secondary); /* تم التعديل */
+            background: var(--bg-secondary); 
             border-radius: 16px;
             padding: 40px;
             margin-bottom: 30px;
@@ -125,7 +122,8 @@
 
         .app-info {
             color: var(--text-secondary);
-            margin-bottom: 30px;
+            margin-bottom: 0px; 
+            margin-top: 15px; 
             font-size: 16px;
         }
 
@@ -170,7 +168,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--bg-primary); /* تم التعديل */
+            background: var(--bg-primary); 
             transition: all 0.3s;
         }
 
@@ -209,7 +207,7 @@
         }
 
         .folder.open .folder-content {
-            max-height: 1200px;
+            max-height: 1200px; 
         }
 
         .file-list {
@@ -223,7 +221,7 @@
             padding: 16px;
             margin-bottom: 8px;
             border-radius: 8px;
-            background: var(--bg-secondary);
+            background: var(--bg-secondary); 
             border: 1px solid var(--border);
             transition: all 0.3s;
         }
@@ -262,7 +260,6 @@
             background: var(--accent-hover);
         }
 
-        /* Footer Style */
         .footer {
             margin-top: 40px;
             padding: 20px 0;
@@ -294,7 +291,8 @@
         }
     </style>
 </head>
-<body data-theme="dark"> <div class="container">
+<body>
+    <div class="container">
         <div class="header">
             <div class="logo">AskBank</div>
             <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀️</button> 
@@ -303,11 +301,15 @@
         <div class="section">
             <div class="app-box">
                 <div class="app-name">AskBank</div>
-                <div class="app-info">حجم التطبيق: 47 ميجابايت (يجب رفعه عبر **Git LFS** لتجاوز حد الـ 25MB)</div>
+                
+                <!-- تم نقل زر التحميل للأعلى -->
                 <a href="./app-release.apk" download class="download-btn">
                     تحميل APK
                     <span class="material-icons">cloud_download</span>
                 </a>
+                
+                <!-- تم نقل معلومات التطبيق لأسفل الزر وتعديل المحتوى -->
+                <div class="app-info">حجم التطبيق: 47 ميجابايت</div>
             </div>
         </div>
         
@@ -384,7 +386,7 @@
                 </div>
                 <div class="folder-content">
                     <div class="file-list">
-                         <div class="file-item">
+                            <div class="file-item">
                             <span class="file-name"><span class="material-icons">code</span> 1- الوحدة الأولى.json</span>
                             <a class="file-download" href="./Hadith/1- الوحدة الأولى.json" download>تحميل</a>
                         </div>
@@ -482,7 +484,6 @@
     </div>
 
     <script>
-        // دالة التبديل بين الوضع الفاتح والداكن
         function toggleTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme');
@@ -490,13 +491,11 @@
             const themeBtn = document.getElementById('themeBtn');
             
             html.setAttribute('data-theme', newTheme);
-            themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+            themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙'; 
             localStorage.setItem('theme', newTheme);
         }
 
-        // تطبيق الوضع المحفوظ أو الافتراضي (dark) عند تحميل الصفحة
         (function applySavedTheme() {
-            // القيمة الافتراضية الآن هي 'dark'
             const savedTheme = localStorage.getItem('theme') || 'dark'; 
             const html = document.documentElement;
             const themeBtn = document.getElementById('themeBtn');
@@ -507,18 +506,15 @@
             }
         })();
 
-        // دالة فتح وإغلاق المجلدات (Accordion)
         function toggleFolder(header) {
             const folder = header.parentElement;
 
-            // إغلاق المجلدات الأخرى المفتوحة
             document.querySelectorAll('.folder.open').forEach(openFolder => {
                 if (openFolder !== folder) {
                     openFolder.classList.remove('open');
                 }
             });
 
-            // فتح أو إغلاق المجلد الحالي
             folder.classList.toggle('open');
         }
     </script>
