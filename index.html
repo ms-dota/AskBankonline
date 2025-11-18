@@ -18,11 +18,11 @@
 
         :root {
             --font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            --bg-primary: #ffffff;      
-            --bg-secondary: #f0f0f0;    
+            --bg-primary: #ffffff;
+            --bg-secondary: #f0f0f0;
             --text-primary: #1a1a1a;
             --text-secondary: #666666;
-            --accent: #4a90e2; 
+            --accent: #4a90e2;
             --accent-hover: #357abd;
             --border: #e0e0e0;
             --shadow: rgba(0, 0, 0, 0.1);
@@ -41,8 +41,8 @@
 
         body {
             font-family: var(--font-family);
-            background-color: var(--bg-primary); 
-            color: var(--text-primary); 
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             transition: background-color 0.3s, color 0.3s;
             min-height: 100vh;
             padding: 20px 0 0;
@@ -90,7 +90,7 @@
         }
 
         .section {
-            background: var(--bg-secondary); 
+            background: var(--bg-secondary);
             border-radius: 16px;
             padding: 40px;
             margin-bottom: 30px;
@@ -122,8 +122,8 @@
 
         .app-info {
             color: var(--text-secondary);
-            margin-bottom: 0px; 
-            margin-top: 15px; 
+            margin-bottom: 0px;
+            margin-top: 15px;
             font-size: 16px;
         }
 
@@ -168,7 +168,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--bg-primary); 
+            background: var(--bg-primary);
             transition: all 0.3s;
         }
 
@@ -207,11 +207,17 @@
         }
 
         .folder.open .folder-content {
-            max-height: 1200px; 
+            max-height: 1200px;
         }
 
         .file-list {
             padding: 0 20px 20px;
+            /* خاصية التمرير (Scrolling) الجديدة */
+            max-height: 350px; /* تحديد أقصى ارتفاع للمحتوى */
+            overflow-y: auto; /* تفعيل التمرير العمودي عند تجاوز الارتفاع */
+            /* شريط تمرير أنيق */
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--bg-primary); 
         }
 
         .file-item {
@@ -221,7 +227,7 @@
             padding: 16px;
             margin-bottom: 8px;
             border-radius: 8px;
-            background: var(--bg-secondary); 
+            background: var(--bg-secondary);
             border: 1px solid var(--border);
             transition: all 0.3s;
         }
@@ -295,7 +301,7 @@
     <div class="container">
         <div class="header">
             <div class="logo">AskBank</div>
-            <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀️</button> 
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀️</button>
         </div>
 
         <div class="section">
@@ -384,7 +390,7 @@
                 </div>
                 <div class="folder-content">
                     <div class="file-list">
-                            <div class="file-item">
+                        <div class="file-item">
                             <span class="file-name"><span class="material-icons">code</span> 1- الوحدة الأولى.json</span>
                             <a class="file-download" href="./Hadith/1- الوحدة الأولى.json" download>تحميل</a>
                         </div>
@@ -470,6 +476,10 @@
                             <span class="file-name"><span class="material-icons">code</span> بنك الوحدة الثالثة الثقافة الاسلامية.json</span>
                             <a class="file-download" href="./Thaqafa/بنك الوحدة الثالثة الثقافة الاسلامية.json" download>تحميل</a>
                         </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> بنك الوحدة الرابعة الثقافة الاسلامية.json</span>
+                            <a class="file-download" href="./Thaqafa/بنك الوحدة الرابعة الثقافة الاسلامية.json" download>تحميل</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -489,12 +499,12 @@
             const themeBtn = document.getElementById('themeBtn');
             
             html.setAttribute('data-theme', newTheme);
-            themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙'; 
+            themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
             localStorage.setItem('theme', newTheme);
         }
 
         (function applySavedTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark'; 
+            const savedTheme = localStorage.getItem('theme') || 'dark';
             const html = document.documentElement;
             const themeBtn = document.getElementById('themeBtn');
 
