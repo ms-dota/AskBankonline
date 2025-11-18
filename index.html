@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AskBank - مركز التحميل</title>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        /* الخط العربي */
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
+        :root {
+            /* Light Mode */
+            --font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --accent: #4a90e2; 
+            --accent-hover: #357abd;
+            --border: #e0e0e0;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode (Default) */
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #5ca3ff;
+            --accent-hover: #4a90e2;
+            --border: #404040;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+            padding: 20px 0 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 20px;
+            color: var(--text-primary);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .section {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .section:hover {
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+
+        .app-box {
+            text-align: center;
+        }
+
+        .app-name {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .app-info {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .download-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px var(--shadow);
+        }
+
+        .download-btn .material-icons {
+            margin-left: 8px;
+            font-size: 24px;
+        }
+
+        .folder {
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .folder-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-primary);
+            transition: all 0.3s;
+        }
+
+        .folder-header:hover {
+            background: var(--bg-secondary);
+        }
+
+        .folder-name {
+            font-weight: 600;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .folder-name .material-icons {
+            font-size: 24px;
+            margin-left: 10px;
+            color: var(--accent);
+        }
+
+        .folder-icon {
+            transition: transform 0.3s;
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .folder.open .folder-icon {
+            transform: rotate(180deg);
+        }
+
+        .folder-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: var(--bg-primary);
+        }
+
+        .folder.open .folder-content {
+            max-height: 1200px; /* قيمة كافية للمجلدات الكبيرة */
+        }
+
+        .file-list {
+            padding: 0 20px 20px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .file-item:hover {
+            transform: translateX(-4px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .file-name {
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            font-size: 15px; /* تصغير الخط قليلا للملفات */
+        }
+
+        .file-name .material-icons {
+            margin-left: 8px;
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+
+        .file-download {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .file-download:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Footer Style */
+        .footer {
+            margin-top: 40px;
+            padding: 20px 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 14px;
+            background-color: var(--bg-secondary);
+            transition: all 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 24px;
+            }
+
+            .app-name {
+                font-size: 36px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .download-btn {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="dark"> <div class="container">
+        <div class="header">
+            <div class="logo">AskBank</div>
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀️</button> </div>
+
+        <div class="section">
+            <div class="app-box">
+                <div class="app-name">AskBank</div>
+                <a href="./app-release.apk" download class="download-btn">
+                    تحميل APK
+                    <span class="material-icons">cloud_download</span>
+					
+                </a>
+				                <div class="app-info">حجم التطبيق: 47 ميجابايت</div>
+
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">مكتبة بنوك أسئلة JSON</h2>
+            
+            <div class="folder">
+                <div class="folder-header" onclick="toggleFolder(this)">
+                    <span class="folder-name"><span class="material-icons">auto_stories</span> علوم القران</span>
+                    <span class="folder-icon">▼</span>
+                </div>
+                <div class="folder-content">
+                    <div class="file-list">
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 2- بنك الفصل الثاني علوم القران.json</span>
+                            <a class="file-download" href="./Quran/2- بنك الفصل الثاني علوم القران.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 3- بنك الفصل الثالث علوم القران.json</span>
+                            <a class="file-download" href="./Quran/3- بنك الفصل الثالث علوم القران.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 5- بنك الفصل الخامس علوم القران.json</span>
+                            <a class="file-download" href="./Quran/5- بنك الفصل الخامس علوم القران.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 6- بنك الفصل السادس علوم القران.json</span>
+                            <a class="file-download" href="./Quran/6- بنك الفصل السادس علوم القران.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 7- بنك الفصل السابع علوم القران.json</span>
+                            <a class="file-download" href="./Quran/7- بنك الفصل السابع علوم القران.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 8- بنك الفصل الثامن علوم القران.json</span>
+                            <a class="file-download" href="./Quran/8- بنك الفصل الثامن علوم القران.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 9- بنك الفصل التاسع علوم القران.json</span>
+                            <a class="file-download" href="./Quran/9- بنك الفصل التاسع علوم القران.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 10- بنك الفصل العاشر علوم القران.json</span>
+                            <a class="file-download" href="./Quran/10- بنك الفصل العاشر علوم القران.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 11- بنك الفصل الحادي عشر علوم القران.json</span>
+                            <a class="file-download" href="./Quran/11- بنك الفصل الحادي عشر علوم القران.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 12- بنك الفصل الثاني عشر علوم القران.json</span>
+                            <a class="file-download" href="./Quran/12- بنك الفصل الثاني عشر علوم القران.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 13- بنك الفصل الثالث عشر علوم القران.json</span>
+                            <a class="file-download" href="./Quran/13- بنك الفصل الثالث عشر علوم القران.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 14- بنك الفصل الرابع عشر علوم القران.json</span>
+                            <a class="file-download" href="./Quran/14- بنك الفصل الرابع عشر علوم القران.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 15- بنك الفصل الخامس عشر علوم القران.json</span>
+                            <a class="file-download" href="./Quran/15- بنك الفصل الخامس عشر علوم القران.json" download>تحميل</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="folder">
+                <div class="folder-header" onclick="toggleFolder(this)">
+                    <span class="folder-name"><span class="material-icons">menu_book</span> علوم الحديث</span>
+                    <span class="folder-icon">▼</span>
+                </div>
+                <div class="folder-content">
+                    <div class="file-list">
+                         <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 1- الوحدة الأولى.json</span>
+                            <a class="file-download" href="./Hadith/1- الوحدة الأولى.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 2- الوحدة الثانية.json</span>
+                            <a class="file-download" href="./Hadith/2- الوحدة الثانية.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 3- الوحدة الثالثة.json</span>
+                            <a class="file-download" href="./Hadith/3- الوحدة الثالثة.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 4- الوحدة الرابعة.json</span>
+                            <a class="file-download" href="./Hadith/4- الوحدة الرابعة.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 5- الوحدة الخامسة.json</span>
+                            <a class="file-download" href="./Hadith/5- الوحدة الخامسة.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 6- الوحدة السادسة.json</span>
+                            <a class="file-download" href="./Hadith/6- الوحدة السادسة.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 7- الوحدة السابعة.json</span>
+                            <a class="file-download" href="./Hadith/7- الوحدة السابعة.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 8- الوحدة الثامنة.json</span>
+                            <a class="file-download" href="./Hadith/8- الوحدة الثامنة.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> 9- الوحدة التاسعة.json</span>
+                            <a class="file-download" href="./Hadith/9- الوحدة التاسعة.json" download>تحميل</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="folder">
+                <div class="folder-header" onclick="toggleFolder(this)">
+                    <span class="folder-name"><span class="material-icons">school</span> العقيدة الاسلامية</span>
+                    <span class="folder-icon">▼</span>
+                </div>
+                <div class="folder-content">
+                    <div class="file-list">
+                         <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> بنك الوحدة الاولى.json</span>
+                            <a class="file-download" href="./Aqida/بنك الوحدة الاولى.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> بنك الوحدة الثانية.json</span>
+                            <a class="file-download" href="./Aqida/بنك الوحدة الثانية.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> بنك الوحدة الثالثة.json</span>
+                            <a class="file-download" href="./Aqida/بنك الوحدة الثالثة.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> بنك الوحدة الرابعة.json</span>
+                            <a class="file-download" href="./Aqida/بنك الوحدة الرابعة.json" download>تحميل</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="folder">
+                <div class="folder-header" onclick="toggleFolder(this)">
+                    <span class="folder-name"><span class="material-icons">diversity_3</span> الثقافة الاسلامية</span>
+                    <span class="folder-icon">▼</span>
+                </div>
+                <div class="folder-content">
+                    <div class="file-list">
+                         <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> بنك الوحدة الاولى الثقافة الاسلامية.json</span>
+                            <a class="file-download" href="./Thaqafa/بنك الوحدة الاولى الثقافة الاسلامية.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> بنك الوحدة الثانية الثقافة الاسلامية.json</span>
+                            <a class="file-download" href="./Thaqafa/بنك الوحدة الثانية الثقافة الاسلامية.json" download>تحميل</a>
+                        </div>
+                        <div class="file-item">
+                            <span class="file-name"><span class="material-icons">code</span> بنك الوحدة الثالثة الثقافة الاسلامية.json</span>
+                            <a class="file-download" href="./Thaqafa/بنك الوحدة الثالثة الثقافة الاسلامية.json" download>تحميل</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>حقوق النشر © 2025. برمجة وتطوير: محمد المعايطه</p>
+    </div>
+
+    <script>
+        // دالة التبديل بين الوضع الفاتح والداكن
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            const themeBtn = document.getElementById('themeBtn');
+            
+            html.setAttribute('data-theme', newTheme);
+            // تبديل الأيقونة
+            themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // تطبيق الوضع المحفوظ أو الافتراضي (dark) عند تحميل الصفحة
+        (function applySavedTheme() {
+            // القيمة الافتراضية الآن هي 'dark'
+            const savedTheme = localStorage.getItem('theme') || 'dark'; 
+            const html = document.documentElement;
+            const themeBtn = document.getElementById('themeBtn');
+
+            html.setAttribute('data-theme', savedTheme);
+            if (themeBtn) {
+                // ضبط الأيقونة حسب الوضع
+                themeBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+            }
+        })();
+
+        // دالة فتح وإغلاق المجلدات (Accordion)
+        function toggleFolder(header) {
+            const folder = header.parentElement;
+
+            // إغلاق المجلدات الأخرى المفتوحة
+            document.querySelectorAll('.folder.open').forEach(openFolder => {
+                if (openFolder !== folder) {
+                    openFolder.classList.remove('open');
+                }
+            });
+
+            // فتح أو إغلاق المجلد الحالي
+            folder.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
