@@ -11,6 +11,12 @@
         /* الخط العربي */
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
             /* Light Mode */
             --font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -38,8 +44,8 @@
 
         body {
             font-family: var(--font-family);
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
+            background-color: var(--bg-primary); /* تم التعديل */
+            color: var(--text-primary); /* تم التعديل */
             transition: background-color 0.3s, color 0.3s;
             min-height: 100vh;
             padding: 20px 0 0;
@@ -87,7 +93,7 @@
         }
 
         .section {
-            background: var(--bg-secondary);
+            background: var(--bg-secondary); /* تم التعديل */
             border-radius: 16px;
             padding: 40px;
             margin-bottom: 30px;
@@ -164,7 +170,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--bg-primary);
+            background: var(--bg-primary); /* تم التعديل */
             transition: all 0.3s;
         }
 
@@ -203,7 +209,7 @@
         }
 
         .folder.open .folder-content {
-            max-height: 1200px; /* قيمة كافية للمجلدات الكبيرة */
+            max-height: 1200px;
         }
 
         .file-list {
@@ -231,7 +237,7 @@
             color: var(--text-primary);
             display: flex;
             align-items: center;
-            font-size: 15px; /* تصغير الخط قليلا للملفات */
+            font-size: 15px;
         }
 
         .file-name .material-icons {
@@ -291,18 +297,17 @@
 <body data-theme="dark"> <div class="container">
         <div class="header">
             <div class="logo">AskBank</div>
-            <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀️</button> </div>
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀️</button> 
+        </div>
 
         <div class="section">
             <div class="app-box">
                 <div class="app-name">AskBank</div>
+                <div class="app-info">حجم التطبيق: 47 ميجابايت (يجب رفعه عبر **Git LFS** لتجاوز حد الـ 25MB)</div>
                 <a href="./app-release.apk" download class="download-btn">
                     تحميل APK
                     <span class="material-icons">cloud_download</span>
-					
                 </a>
-				                <div class="app-info">حجم التطبيق: 47 ميجابايت</div>
-
             </div>
         </div>
         
@@ -426,7 +431,7 @@
                 </div>
                 <div class="folder-content">
                     <div class="file-list">
-                         <div class="file-item">
+                        <div class="file-item">
                             <span class="file-name"><span class="material-icons">code</span> بنك الوحدة الاولى.json</span>
                             <a class="file-download" href="./Aqida/بنك الوحدة الاولى.json" download>تحميل</a>
                         </div>
@@ -453,7 +458,7 @@
                 </div>
                 <div class="folder-content">
                     <div class="file-list">
-                         <div class="file-item">
+                        <div class="file-item">
                             <span class="file-name"><span class="material-icons">code</span> بنك الوحدة الاولى الثقافة الاسلامية.json</span>
                             <a class="file-download" href="./Thaqafa/بنك الوحدة الاولى الثقافة الاسلامية.json" download>تحميل</a>
                         </div>
@@ -485,7 +490,6 @@
             const themeBtn = document.getElementById('themeBtn');
             
             html.setAttribute('data-theme', newTheme);
-            // تبديل الأيقونة
             themeBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
             localStorage.setItem('theme', newTheme);
         }
@@ -499,7 +503,6 @@
 
             html.setAttribute('data-theme', savedTheme);
             if (themeBtn) {
-                // ضبط الأيقونة حسب الوضع
                 themeBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
             }
         })();
