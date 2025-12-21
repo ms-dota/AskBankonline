@@ -368,6 +368,43 @@
             flex-grow: 1;
         }
 
+        /* Mode Selection Styles */
+        .mode-selection {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+        }
+        
+        .mode-btn {
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background: var(--bg-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: right;
+            position: relative;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--accent);
+            background: var(--bg-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .mode-btn h3 {
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .mode-btn p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
         .question-text {
             font-size: 20px;
             font-weight: 600;
@@ -394,7 +431,7 @@
             transition: all 0.2s;
         }
 
-        .option-btn:hover {
+        .option-btn:hover:not(:disabled) {
             border-color: var(--accent);
         }
 
@@ -403,17 +440,23 @@
             color: white;
             border-color: var(--accent);
         }
+        
+        /* Disabled state for Instant Mode */
+        .option-btn:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
 
-        /* Review Mode Styles */
+        /* Result Colors */
         .option-btn.correct {
-            background-color: var(--correct);
-            color: var(--correct-text);
-            border-color: var(--correct-text);
+            background-color: var(--correct) !important;
+            color: var(--correct-text) !important;
+            border-color: var(--correct-text) !important;
         }
         .option-btn.wrong {
-            background-color: var(--wrong);
-            color: var(--wrong-text);
-            border-color: var(--wrong-text);
+            background-color: var(--wrong) !important;
+            color: var(--wrong-text) !important;
+            border-color: var(--wrong-text) !important;
         }
 
         .quiz-footer {
@@ -448,7 +491,7 @@
 
         .score-display {
             text-align: center;
-            display: none; /* Hidden by default */
+            display: none;
         }
         
         .score-circle {
@@ -497,12 +540,10 @@
         <div class="section">
             <div class="app-box">
                 <div class="app-name">AskBank</div>
-                
                 <a href="https://github.com/ms-dota/askbank-download/raw/main/app-release_v3.apk" class="download-btn">
                     تحميل APK (v3)
                     <span class="material-icons">cloud_download</span>
                 </a>
-                
                 <div class="app-info">حجم التطبيق: 47 ميجابايت</div>
             </div>
         </div>
@@ -603,7 +644,22 @@
             </div>
             
             <div class="quiz-body" id="quizBody">
-                <div id="questionView">
+                
+                <div id="modeSelectionView" class="mode-selection">
+                    <h2 style="margin-bottom: 10px;">اختر طريقة الاختبار</h2>
+                    
+                    <div class="mode-btn" onclick="startQuiz('standard')">
+                        <h3><span class="material-icons" style="vertical-align: middle;">assignment</span> الوضع العادي</h3>
+                        <p>تختار الإجابة، ويمكنك تغييرها، وتظهر النتيجة في نهاية الاختبار.</p>
+                    </div>
+
+                    <div class="mode-btn" onclick="startQuiz('instant')">
+                        <h3><span class="material-icons" style="vertical-align: middle;">flash_on</span> الوضع الفوري</h3>
+                        <p>تظهر النتيجة (صح/خطأ) فور اختيارك للإجابة، ولا يمكن تغييرها بعد ذلك.</p>
+                    </div>
+                </div>
+
+                <div id="questionView" style="display: none;">
                     <div class="review-mode-indicator" id="reviewIndicator">وضع المراجعة - الإجابات الصحيحة باللون الأخضر</div>
                     <div class="question-text" id="questionText">جاري تحميل السؤال...</div>
                     <div class="options-list" id="optionsList">
@@ -624,7 +680,8 @@
             </div>
 
             <div class="quiz-footer" id="quizFooter">
-                <span id="qCount">سؤال 1 / 10</span>
+                <button class="q-btn q-btn-secondary" id="prevBtn" onclick="prevQuestion()" style="visibility: hidden;">السابق</button>
+                <span id="qCount"></span>
                 <button class="q-btn q-btn-primary" id="nextBtn" onclick="nextQuestion()">التالي</button>
             </div>
         </div>
@@ -675,17 +732,14 @@
             fileItems.forEach(item => {
                 const downloadLink = item.querySelector('.file-download');
                 if (downloadLink) {
-                    // Create a wrapper for buttons
                     const actionsDiv = document.createElement('div');
                     actionsDiv.className = 'actions-group';
                     
-                    // Create Quiz Button
                     const quizBtn = document.createElement('button');
                     quizBtn.className = 'quiz-start-btn';
                     quizBtn.innerHTML = '<span class="material-icons">play_circle</span> اختبار';
                     quizBtn.onclick = () => loadQuiz(downloadLink.getAttribute('href'));
                     
-                    // Move download link inside wrapper
                     downloadLink.parentNode.insertBefore(actionsDiv, downloadLink);
                     actionsDiv.appendChild(quizBtn);
                     actionsDiv.appendChild(downloadLink);
@@ -696,30 +750,28 @@
         // --- Quiz Engine Logic ---
         let currentQuestions = [];
         let currentQuestionIndex = 0;
-        let userAnswers = {}; // Stores index of selected answer for each question
+        let userAnswers = {}; 
         let isReviewMode = false;
+        let quizMode = 'standard'; // 'standard' or 'instant'
 
         async function loadQuiz(jsonPath) {
             try {
-                // Show Loading
+                // Show Modal with loading or directly prepare selection
                 document.getElementById('quizModal').classList.add('active');
-                document.getElementById('questionText').innerText = 'جاري جلب الأسئلة...';
-                document.getElementById('optionsList').innerHTML = '';
+                
+                // Hide other views, show loader if needed, but here we just reset
+                document.getElementById('modeSelectionView').style.display = 'none';
+                document.getElementById('questionView').style.display = 'none';
                 document.getElementById('scoreView').style.display = 'none';
-                document.getElementById('questionView').style.display = 'block';
-                document.getElementById('quizFooter').style.display = 'flex';
-                document.getElementById('reviewIndicator').style.display = 'none';
-
+                document.getElementById('quizFooter').style.display = 'none';
+                
                 const response = await fetch(jsonPath);
                 if (!response.ok) throw new Error("Failed to load");
                 const data = await response.json();
 
-                // Initialize Quiz
+                // Store Data
                 currentQuestions = data.questions || [];
                 document.getElementById('quizTitle').innerText = data.title || 'اختبار';
-                currentQuestionIndex = 0;
-                userAnswers = {};
-                isReviewMode = false;
                 
                 if (currentQuestions.length === 0) {
                     alert("الملف فارغ أو لا يحتوي على أسئلة!");
@@ -727,13 +779,28 @@
                     return;
                 }
 
-                renderQuestion();
+                // Show Mode Selection
+                document.getElementById('modeSelectionView').style.display = 'flex';
 
             } catch (error) {
                 console.error(error);
-                alert("حدث خطأ أثناء تحميل ملف الأسئلة. تأكد من رفعه بشكل صحيح.");
+                alert("حدث خطأ أثناء تحميل ملف الأسئلة.");
                 closeQuiz();
             }
+        }
+
+        function startQuiz(mode) {
+            quizMode = mode;
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            isReviewMode = false;
+
+            document.getElementById('modeSelectionView').style.display = 'none';
+            document.getElementById('questionView').style.display = 'block';
+            document.getElementById('quizFooter').style.display = 'flex';
+            document.getElementById('reviewIndicator').style.display = 'none';
+
+            renderQuestion();
         }
 
         function closeQuiz() {
@@ -746,45 +813,50 @@
             const optsList = document.getElementById('optionsList');
             const qCount = document.getElementById('qCount');
             const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
 
-            // Update Text
-            qText.innerText = q.text;
-            qCount.innerText = `سؤال ${currentQuestionIndex + 1} من ${currentQuestions.length}`;
+            // Update Text with "س 1:" format
+            qText.innerText = `س ${currentQuestionIndex + 1}: ${q.text}`;
+            qCount.innerText = `${currentQuestionIndex + 1} / ${currentQuestions.length}`;
             
-            // Clear Options
-            optsList.innerHTML = '';
-
-            // Update Button Text (Last question vs Next)
+            // Manage Buttons
+            prevBtn.style.visibility = currentQuestionIndex === 0 ? 'hidden' : 'visible';
+            
             if (currentQuestionIndex === currentQuestions.length - 1) {
                 nextBtn.innerText = isReviewMode ? "إنهاء المراجعة" : "إنهاء وعرض النتيجة";
             } else {
                 nextBtn.innerText = "التالي";
             }
 
-            // Render Options
+            // Clear Options
+            optsList.innerHTML = '';
+
+            // Check if this question is already answered (relevant for Instant Mode navigation)
+            const isAnswered = userAnswers[currentQuestionIndex] !== undefined;
+
             q.options.forEach((optText, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = optText;
                 
-                // Logic for Review Mode (Coloring)
-                if (isReviewMode) {
+                // --- Logic: Review Mode OR (Instant Mode AND Answered) ---
+                if (isReviewMode || (quizMode === 'instant' && isAnswered)) {
                     btn.disabled = true; // Disable clicking
                     
-                    // Marks correct answer Green
+                    // Mark Correct
                     if (idx === q.correctAnswer) {
                         btn.classList.add('correct');
-                        // Add checkmark
                         btn.innerHTML += ' ✅';
                     }
                     
-                    // Marks user wrong answer Red
+                    // Mark Wrong (User's choice)
                     if (userAnswers[currentQuestionIndex] === idx && idx !== q.correctAnswer) {
                         btn.classList.add('wrong');
                         btn.innerHTML += ' ❌';
                     }
-                } else {
-                    // Logic for Normal Taking Mode
+                } 
+                // --- Logic: Standard Mode (Active) ---
+                else {
                     if (userAnswers[currentQuestionIndex] === idx) {
                         btn.classList.add('selected');
                     }
@@ -798,17 +870,22 @@
         function selectOption(idx) {
             if (isReviewMode) return;
 
-            userAnswers[currentQuestionIndex] = idx;
-            renderQuestion(); // Re-render to show selection
+            // Instant Mode Logic
+            if (quizMode === 'instant') {
+                // If already answered, do nothing (should be disabled anyway)
+                if (userAnswers[currentQuestionIndex] !== undefined) return;
+
+                userAnswers[currentQuestionIndex] = idx;
+                renderQuestion(); // Re-render to show colors immediately and disable
+            } 
+            // Standard Mode Logic
+            else {
+                userAnswers[currentQuestionIndex] = idx;
+                renderQuestion(); // Just highlight selected
+            }
         }
 
         function nextQuestion() {
-            // Check if answered (optional enforcement)
-            if (!isReviewMode && userAnswers[currentQuestionIndex] === undefined) {
-                // Remove comment below if you want to force answering
-                // alert("الرجاء اختيار إجابة!"); return; 
-            }
-
             if (currentQuestionIndex < currentQuestions.length - 1) {
                 currentQuestionIndex++;
                 renderQuestion();
@@ -818,6 +895,13 @@
                 } else {
                     showResults();
                 }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
             }
         }
 
@@ -831,12 +915,10 @@
 
             const percent = Math.round((correctCount / currentQuestions.length) * 100);
 
-            // Switch views
             document.getElementById('questionView').style.display = 'none';
             document.getElementById('quizFooter').style.display = 'none';
             document.getElementById('scoreView').style.display = 'block';
 
-            // Populate Data
             document.getElementById('scoreCircle').innerText = percent + "%";
             document.getElementById('scoreText').innerText = `أجبت على ${correctCount} من ${currentQuestions.length} بشكل صحيح`;
         }
