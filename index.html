@@ -308,7 +308,6 @@
             transition: all 0.3s;
         }
 
-        /* --- STYLES FOR QUIZ MODAL --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -368,7 +367,6 @@
             flex-grow: 1;
         }
 
-        /* Mode Selection Styles */
         .mode-selection {
             display: none;
             flex-direction: column;
@@ -441,13 +439,11 @@
             border-color: var(--accent);
         }
         
-        /* Disabled state for Instant Mode */
         .option-btn:disabled {
             cursor: default;
             opacity: 0.8;
         }
 
-        /* Result Colors */
         .option-btn.correct {
             background-color: var(--correct) !important;
             color: var(--correct-text) !important;
@@ -663,7 +659,7 @@
                     <div class="review-mode-indicator" id="reviewIndicator">وضع المراجعة - الإجابات الصحيحة باللون الأخضر</div>
                     <div class="question-text" id="questionText">جاري تحميل السؤال...</div>
                     <div class="options-list" id="optionsList">
-                        </div>
+                    </div>
                 </div>
 
                 <div class="score-display" id="scoreView">
@@ -692,7 +688,6 @@
     </div>
 
     <script>
-        // --- Theme Logic ---
         function toggleTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme');
@@ -725,7 +720,6 @@
             folder.classList.toggle('open');
         }
 
-        // --- Auto-Add Quiz Buttons Logic ---
         document.addEventListener('DOMContentLoaded', () => {
             const fileItems = document.querySelectorAll('.file-item');
             
@@ -747,19 +741,16 @@
             });
         });
 
-        // --- Quiz Engine Logic ---
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let userAnswers = {}; 
         let isReviewMode = false;
-        let quizMode = 'standard'; // 'standard' or 'instant'
+        let quizMode = 'standard'; 
 
         async function loadQuiz(jsonPath) {
             try {
-                // Show Modal with loading or directly prepare selection
                 document.getElementById('quizModal').classList.add('active');
                 
-                // Hide other views, show loader if needed, but here we just reset
                 document.getElementById('modeSelectionView').style.display = 'none';
                 document.getElementById('questionView').style.display = 'none';
                 document.getElementById('scoreView').style.display = 'none';
@@ -769,7 +760,6 @@
                 if (!response.ok) throw new Error("Failed to load");
                 const data = await response.json();
 
-                // Store Data
                 currentQuestions = data.questions || [];
                 document.getElementById('quizTitle').innerText = data.title || 'اختبار';
                 
@@ -779,7 +769,6 @@
                     return;
                 }
 
-                // Show Mode Selection
                 document.getElementById('modeSelectionView').style.display = 'flex';
 
             } catch (error) {
@@ -815,11 +804,9 @@
             const nextBtn = document.getElementById('nextBtn');
             const prevBtn = document.getElementById('prevBtn');
 
-            // Update Text with "س 1:" format
             qText.innerText = `س ${currentQuestionIndex + 1}: ${q.text}`;
             qCount.innerText = `${currentQuestionIndex + 1} / ${currentQuestions.length}`;
             
-            // Manage Buttons
             prevBtn.style.visibility = currentQuestionIndex === 0 ? 'hidden' : 'visible';
             
             if (currentQuestionIndex === currentQuestions.length - 1) {
@@ -828,10 +815,8 @@
                 nextBtn.innerText = "التالي";
             }
 
-            // Clear Options
             optsList.innerHTML = '';
 
-            // Check if this question is already answered (relevant for Instant Mode navigation)
             const isAnswered = userAnswers[currentQuestionIndex] !== undefined;
 
             q.options.forEach((optText, idx) => {
@@ -839,23 +824,19 @@
                 btn.className = 'option-btn';
                 btn.innerText = optText;
                 
-                // --- Logic: Review Mode OR (Instant Mode AND Answered) ---
                 if (isReviewMode || (quizMode === 'instant' && isAnswered)) {
-                    btn.disabled = true; // Disable clicking
+                    btn.disabled = true;
                     
-                    // Mark Correct
                     if (idx === q.correctAnswer) {
                         btn.classList.add('correct');
                         btn.innerHTML += ' ✅';
                     }
                     
-                    // Mark Wrong (User's choice)
                     if (userAnswers[currentQuestionIndex] === idx && idx !== q.correctAnswer) {
                         btn.classList.add('wrong');
                         btn.innerHTML += ' ❌';
                     }
                 } 
-                // --- Logic: Standard Mode (Active) ---
                 else {
                     if (userAnswers[currentQuestionIndex] === idx) {
                         btn.classList.add('selected');
@@ -870,22 +851,24 @@
         function selectOption(idx) {
             if (isReviewMode) return;
 
-            // Instant Mode Logic
             if (quizMode === 'instant') {
-                // If already answered, do nothing (should be disabled anyway)
                 if (userAnswers[currentQuestionIndex] !== undefined) return;
 
                 userAnswers[currentQuestionIndex] = idx;
-                renderQuestion(); // Re-render to show colors immediately and disable
+                renderQuestion(); 
             } 
-            // Standard Mode Logic
             else {
                 userAnswers[currentQuestionIndex] = idx;
-                renderQuestion(); // Just highlight selected
+                renderQuestion(); 
             }
         }
 
         function nextQuestion() {
+            if (!isReviewMode && userAnswers[currentQuestionIndex] === undefined) {
+                alert("الرجاء اختيار إجابة للمتابعة");
+                return;
+            }
+
             if (currentQuestionIndex < currentQuestions.length - 1) {
                 currentQuestionIndex++;
                 renderQuestion();
