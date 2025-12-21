@@ -516,6 +516,31 @@
             text-align: center;
         }
 
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 16px;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+
         @media (max-width: 768px) {
             .section { padding: 24px; }
             .app-name { font-size: 36px; }
@@ -683,6 +708,8 @@
         </div>
     </div>
 
+    <div id="toast" class="toast"></div>
+
     <div class="footer">
         <p>حقوق النشر © 2025. برمجة وتطوير: محمد المعايطه</p>
     </div>
@@ -740,6 +767,15 @@
                 }
             });
         });
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.className = 'toast show';
+            setTimeout(function(){ 
+                toast.className = toast.className.replace('show', ''); 
+            }, 2000);
+        }
 
         let currentQuestions = [];
         let currentQuestionIndex = 0;
@@ -865,7 +901,7 @@
 
         function nextQuestion() {
             if (!isReviewMode && userAnswers[currentQuestionIndex] === undefined) {
-                alert("الرجاء اختيار إجابة للمتابعة");
+                showToast("الرجاء اختيار إجابة للمتابعة");
                 return;
             }
 
