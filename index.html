@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,7 +51,9 @@
       --shadow: 0 12px 30px rgba(0, 0, 0, .24);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -60,7 +63,11 @@
       color: var(--text);
     }
 
-    button, input, select { font: inherit; }
+    button,
+    input,
+    select {
+      font: inherit;
+    }
 
     .shell {
       width: min(1180px, calc(100% - 32px));
@@ -121,7 +128,10 @@
       touch-action: none;
     }
 
-    .intro, .toolbar, .course, .modal-card {
+    .intro,
+    .toolbar,
+    .course,
+    .modal-card {
       background: var(--surface-soft);
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -234,7 +244,9 @@
       gap: 14px;
     }
 
-    .course { overflow: hidden; }
+    .course {
+      overflow: hidden;
+    }
 
     .course-head {
       width: 100%;
@@ -279,7 +291,9 @@
       transition: transform .2s;
     }
 
-    .course.open .chevron { transform: rotate(180deg); }
+    .course.open .chevron {
+      transform: rotate(180deg);
+    }
 
     .bank-list {
       display: none;
@@ -287,7 +301,9 @@
       gap: 10px;
     }
 
-    .course.open .bank-list { display: grid; }
+    .course.open .bank-list {
+      display: grid;
+    }
 
     .bank {
       display: grid;
@@ -358,7 +374,9 @@
       transition: transform .2s, background .2s, border-color .2s;
     }
 
-    .btn:hover { transform: translateY(-1px); }
+    .btn:hover {
+      transform: translateY(-1px);
+    }
 
     .btn.primary {
       color: #fff;
@@ -415,7 +433,9 @@
       background: var(--bg);
     }
 
-    .modal.active { display: flex; }
+    .modal.active {
+      display: flex;
+    }
 
     .modal-card {
       width: min(780px, 100%);
@@ -426,7 +446,8 @@
       overflow: hidden;
     }
 
-    .modal-head, .modal-foot {
+    .modal-head,
+    .modal-foot {
       padding: 16px 18px;
       display: flex;
       justify-content: space-between;
@@ -554,7 +575,9 @@
       white-space: pre-wrap;
     }
 
-    .answer-box.visible { display: block; }
+    .answer-box.visible {
+      display: block;
+    }
 
     .score {
       text-align: center;
@@ -604,34 +627,88 @@
     }
 
     @media (max-width: 800px) {
-      .shell { width: min(100% - 22px, 1180px); padding-top: 14px; }
-      .intro { padding: 22px; }
-      .toolbar { grid-template-columns: 1fr; }
-      .select { min-height: 46px; }
-      .bank { grid-template-columns: 1fr; }
-      .actions { width: 100%; }
-      .actions .btn { flex: 1; }
-      .modal-foot { flex-wrap: wrap; }
-      .modal-card { height: 94vh; }
+      .shell {
+        width: min(100% - 22px, 1180px);
+        padding-top: 14px;
+      }
+
+      .intro {
+        padding: 22px;
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .select {
+        min-height: 46px;
+      }
+
+      .bank {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        width: 100%;
+      }
+
+      .actions .btn {
+        flex: 1;
+      }
+
+      .modal-foot {
+        flex-wrap: wrap;
+      }
+
+      .modal-card {
+        height: 94vh;
+      }
     }
 
     @media (max-width: 520px) {
-      .brand { font-size: 22px; }
-      .brand-mark { width: 40px; height: 40px; }
+      .brand {
+        font-size: 22px;
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+      }
+
       .intro {
         grid-template-columns: 1fr;
         justify-items: start;
         gap: 14px;
       }
-      .hero-logo { width: 72px; height: 72px; }
-      .intro p { font-size: 16px; }
-      .course-head { padding: 15px; }
-      .bank-list { padding: 0 12px 14px; }
-      .bank { padding: 13px; }
-      .modal-body { padding: 16px; }
+
+      .hero-logo {
+        width: 72px;
+        height: 72px;
+      }
+
+      .intro p {
+        font-size: 16px;
+      }
+
+      .course-head {
+        padding: 15px;
+      }
+
+      .bank-list {
+        padding: 0 12px 14px;
+      }
+
+      .bank {
+        padding: 13px;
+      }
+
+      .modal-body {
+        padding: 16px;
+      }
     }
   </style>
 </head>
+
 <body>
   <main class="shell">
     <header class="topbar">
@@ -647,7 +724,7 @@
         <img class="hero-logo" src="./assets/icon.png" alt="AskBank">
         <div class="intro-copy">
           <h1>تحميل تطبيق AskBank</h1>
-          <p>حمّل التطبيق على جهازك، أو استخدم نسخة الموقع لتصفح البنوك والتدريب مباشرة من المتصفح.</p>
+          <p>حمّل التطبيق على جهازك، أو استخدم نسخة الموقع لتصفح البنوك والتدرب مباشرة من المتصفح.</p>
           <div class="hero-actions">
             <a class="btn primary" href="./AskBank_v4.apk" download>تحميل APK</a>
             <span class="pill">حوالي 48 ميجابايت</span>
@@ -692,90 +769,90 @@
       {
         "name": "الثقافة الاسلامية",
         "files": [
-          {"name":"1- بنك اسئلة الوحدة الاولى.json","path":"./الثقافة الاسلامية/1- بنك اسئلة الوحدة الاولى.json","title":"بنك أسئلة الوحدة الأولى: مدخل إلى علم الثقافة الإسلامية","type":"multiple_choice","questions":65,"essayQuestions":0},
-          {"name":"2- بنك اسئلة الوحدة الثانية.json","path":"./الثقافة الاسلامية/2- بنك اسئلة الوحدة الثانية.json","title":"بنك أسئلة الوحدة الثانية: مصادر الثقافة الإسلامية","type":"multiple_choice","questions":75,"essayQuestions":0},
-          {"name":"3- بنك اسئلة الوحدة الثالثة.json","path":"./الثقافة الاسلامية/3- بنك اسئلة الوحدة الثالثة.json","title":"بنك أسئلة الوحدة الثالثة: القضايا الثقافية المستجدة المعاصرة","type":"multiple_choice","questions":104,"essayQuestions":0},
-          {"name":"4- بنك اسئلة الوحدة الرابعة.json","path":"./الثقافة الاسلامية/4- بنك اسئلة الوحدة الرابعة.json","title":"بنك أسئلة الوحدة الرابعة: تحديات تواجه الثقافة الإسلامية","type":"multiple_choice","questions":78,"essayQuestions":0},
-          {"name":"5- بنك اسئلة الوحدة الخامسة.json","path":"./الثقافة الاسلامية/5- بنك اسئلة الوحدة الخامسة.json","title":"بنك أسئلة الوحدة الخامسة: رد الشبهات التي تثار حول الإسلام","type":"multiple_choice","questions":50,"essayQuestions":0},
-          {"name":"6- بنك اسئلة الوحدة السادسة.json","path":"./الثقافة الاسلامية/6- بنك اسئلة الوحدة السادسة.json","title":"بنك أسئلة الوحدة السادسة: النظم الإسلامية","type":"multiple_choice","questions":80,"essayQuestions":0}
+          { "name": "1- بنك اسئلة الوحدة الاولى.json", "path": "./الثقافة الاسلامية/1- بنك اسئلة الوحدة الاولى.json", "title": "بنك أسئلة الوحدة الأولى: مدخل إلى علم الثقافة الإسلامية", "type": "multiple_choice", "questions": 65, "essayQuestions": 0 },
+          { "name": "2- بنك اسئلة الوحدة الثانية.json", "path": "./الثقافة الاسلامية/2- بنك اسئلة الوحدة الثانية.json", "title": "بنك أسئلة الوحدة الثانية: مصادر الثقافة الإسلامية", "type": "multiple_choice", "questions": 75, "essayQuestions": 0 },
+          { "name": "3- بنك اسئلة الوحدة الثالثة.json", "path": "./الثقافة الاسلامية/3- بنك اسئلة الوحدة الثالثة.json", "title": "بنك أسئلة الوحدة الثالثة: القضايا الثقافية المستجدة المعاصرة", "type": "multiple_choice", "questions": 104, "essayQuestions": 0 },
+          { "name": "4- بنك اسئلة الوحدة الرابعة.json", "path": "./الثقافة الاسلامية/4- بنك اسئلة الوحدة الرابعة.json", "title": "بنك أسئلة الوحدة الرابعة: تحديات تواجه الثقافة الإسلامية", "type": "multiple_choice", "questions": 78, "essayQuestions": 0 },
+          { "name": "5- بنك اسئلة الوحدة الخامسة.json", "path": "./الثقافة الاسلامية/5- بنك اسئلة الوحدة الخامسة.json", "title": "بنك أسئلة الوحدة الخامسة: رد الشبهات التي تثار حول الإسلام", "type": "multiple_choice", "questions": 50, "essayQuestions": 0 },
+          { "name": "6- بنك اسئلة الوحدة السادسة.json", "path": "./الثقافة الاسلامية/6- بنك اسئلة الوحدة السادسة.json", "title": "بنك أسئلة الوحدة السادسة: النظم الإسلامية", "type": "multiple_choice", "questions": 80, "essayQuestions": 0 }
         ]
       },
       {
         "name": "العقيدة الإسلامية",
         "files": [
-          {"name":"1- بنك اسئلة الفصل الاول.json","path":"./العقيدة الإسلامية/1- بنك اسئلة الفصل الاول.json","title":"بنك أسئلة الفصل الأول: مقدمات في العقيدة","type":"multiple_choice","questions":88,"essayQuestions":0},
-          {"name":"2- بنك اسئلة الفصل الثاني.json","path":"./العقيدة الإسلامية/2- بنك اسئلة الفصل الثاني.json","title":"بنك أسئلة الفصل الثاني: حقيقة الإيمان والإسلام والعلاقة بينهما","type":"multiple_choice","questions":50,"essayQuestions":0},
-          {"name":"3- بنك اسئلة الفصل الثالث.json","path":"./العقيدة الإسلامية/3- بنك اسئلة الفصل الثالث.json","title":"بنك أسئلة الفصل الثالث: مذاهب أهل السنة والجماعة في العقائد","type":"multiple_choice","questions":75,"essayQuestions":0},
-          {"name":"4- بنك اسئلة الفصل الرابع.json","path":"./العقيدة الإسلامية/4- بنك اسئلة الفصل الرابع.json","title":"بنك أسئلة الفصل الرابع: الإيمان بالله تعالى (وجوده، وحدانيته، أسماؤه وصفاته)","type":"multiple_choice","questions":71,"essayQuestions":0},
-          {"name":"5- بنك اسئلة الفصل الخامس.json","path":"./العقيدة الإسلامية/5- بنك اسئلة الفصل الخامس.json","title":"بنك أسئلة الفصل الخامس: الإيمان بالملائكة وعالم الجن والسحر","type":"multiple_choice","questions":50,"essayQuestions":0},
-          {"name":"6- بنك اسئلة الفصل السادس.json","path":"./العقيدة الإسلامية/6- بنك اسئلة الفصل السادس.json","title":"بنك أسئلة الفصل السادس: الإيمان بالكتب السماوية","type":"multiple_choice","questions":30,"essayQuestions":0},
-          {"name":"7- بنك اسئلة الفصل السابع.json","path":"./العقيدة الإسلامية/7- بنك اسئلة الفصل السابع.json","title":"بنك أسئلة الفصل السابع: الإيمان بالأنبياء والرسل (المفهوم، الدلائل، المعجزات، والعصمة)","type":"multiple_choice","questions":50,"essayQuestions":0},
-          {"name":"8- بنك اسئلة الفصل الثامن.json","path":"./العقيدة الإسلامية/8- بنك اسئلة الفصل الثامن.json","title":"بنك أسئلة الفصل الثامن: الولاية والكرامة (المفهوم، الأنواع، الشواهد، والفروق)","type":"multiple_choice","questions":40,"essayQuestions":0},
-          {"name":"9- بنك اسئلة الفصل التاسع.json","path":"./العقيدة الإسلامية/9- بنك اسئلة الفصل التاسع.json","title":"بنك أسئلة الفصل التاسع: الإيمان بالقدر (المفهوم، المراتب، الآثار)","type":"multiple_choice","questions":60,"essayQuestions":0},
-          {"name":"10- بنك اسئلة الفصل العاشر.json","path":"./العقيدة الإسلامية/10- بنك اسئلة الفصل العاشر.json","title":"بنك أسئلة الفصل العاشر: الإيمان باليوم الآخر وأحداثه","type":"multiple_choice","questions":67,"essayQuestions":0}
+          { "name": "1- بنك اسئلة الفصل الاول.json", "path": "./العقيدة الإسلامية/1- بنك اسئلة الفصل الاول.json", "title": "بنك أسئلة الفصل الأول: مقدمات في العقيدة", "type": "multiple_choice", "questions": 88, "essayQuestions": 0 },
+          { "name": "2- بنك اسئلة الفصل الثاني.json", "path": "./العقيدة الإسلامية/2- بنك اسئلة الفصل الثاني.json", "title": "بنك أسئلة الفصل الثاني: حقيقة الإيمان والإسلام والعلاقة بينهما", "type": "multiple_choice", "questions": 50, "essayQuestions": 0 },
+          { "name": "3- بنك اسئلة الفصل الثالث.json", "path": "./العقيدة الإسلامية/3- بنك اسئلة الفصل الثالث.json", "title": "بنك أسئلة الفصل الثالث: مذاهب أهل السنة والجماعة في العقائد", "type": "multiple_choice", "questions": 75, "essayQuestions": 0 },
+          { "name": "4- بنك اسئلة الفصل الرابع.json", "path": "./العقيدة الإسلامية/4- بنك اسئلة الفصل الرابع.json", "title": "بنك أسئلة الفصل الرابع: الإيمان بالله تعالى (وجوده، وحدانيته، أسماؤه وصفاته)", "type": "multiple_choice", "questions": 71, "essayQuestions": 0 },
+          { "name": "5- بنك اسئلة الفصل الخامس.json", "path": "./العقيدة الإسلامية/5- بنك اسئلة الفصل الخامس.json", "title": "بنك أسئلة الفصل الخامس: الإيمان بالملائكة وعالم الجن والسحر", "type": "multiple_choice", "questions": 50, "essayQuestions": 0 },
+          { "name": "6- بنك اسئلة الفصل السادس.json", "path": "./العقيدة الإسلامية/6- بنك اسئلة الفصل السادس.json", "title": "بنك أسئلة الفصل السادس: الإيمان بالكتب السماوية", "type": "multiple_choice", "questions": 30, "essayQuestions": 0 },
+          { "name": "7- بنك اسئلة الفصل السابع.json", "path": "./العقيدة الإسلامية/7- بنك اسئلة الفصل السابع.json", "title": "بنك أسئلة الفصل السابع: الإيمان بالأنبياء والرسل (المفهوم، الدلائل، المعجزات، والعصمة)", "type": "multiple_choice", "questions": 50, "essayQuestions": 0 },
+          { "name": "8- بنك اسئلة الفصل الثامن.json", "path": "./العقيدة الإسلامية/8- بنك اسئلة الفصل الثامن.json", "title": "بنك أسئلة الفصل الثامن: الولاية والكرامة (المفهوم، الأنواع، الشواهد، والفروق)", "type": "multiple_choice", "questions": 40, "essayQuestions": 0 },
+          { "name": "9- بنك اسئلة الفصل التاسع.json", "path": "./العقيدة الإسلامية/9- بنك اسئلة الفصل التاسع.json", "title": "بنك أسئلة الفصل التاسع: الإيمان بالقدر (المفهوم، المراتب، الآثار)", "type": "multiple_choice", "questions": 60, "essayQuestions": 0 },
+          { "name": "10- بنك اسئلة الفصل العاشر.json", "path": "./العقيدة الإسلامية/10- بنك اسئلة الفصل العاشر.json", "title": "بنك أسئلة الفصل العاشر: الإيمان باليوم الآخر وأحداثه", "type": "multiple_choice", "questions": 67, "essayQuestions": 0 }
         ]
       },
       {
         "name": "المدخل الى التشريع الاسلامي ومقاصده",
         "files": [
-          {"name":"بنك اسئلة مادة المد المدخل الى التشريع (الباب الاول غير شامل القواعد الفقهية).json","path":"./المدخل الى التشريع الاسلامي ومقاصده/بنك اسئلة مادة المد المدخل الى التشريع (الباب الاول غير شامل القواعد الفقهية).json","title":"بنك اسئلة مادة المد المدخل الى التشريع (الباب الاول غير شامل القواعد الفقهية)","type":"multiple_choice","questions":60,"essayQuestions":0}
+          { "name": "بنك اسئلة مادة المد المدخل الى التشريع (الباب الاول غير شامل القواعد الفقهية).json", "path": "./المدخل الى التشريع الاسلامي ومقاصده/بنك اسئلة مادة المد المدخل الى التشريع (الباب الاول غير شامل القواعد الفقهية).json", "title": "بنك اسئلة مادة المد المدخل الى التشريع (الباب الاول غير شامل القواعد الفقهية)", "type": "multiple_choice", "questions": 60, "essayQuestions": 0 }
         ]
       },
       {
         "name": "علوم الحديث",
         "files": [
-          {"name":"1- الوحدة الأولى.json","path":"./علوم الحديث/1- الوحدة الأولى.json","title":"بنك أسئلة الوحدة الأولى","type":"multiple_choice","questions":50,"essayQuestions":0},
-          {"name":"2- الوحدة الثانية.json","path":"./علوم الحديث/2- الوحدة الثانية.json","title":"بنك أسئلة الوحدة الثانية","type":"multiple_choice","questions":133,"essayQuestions":0},
-          {"name":"3- الوحدة الثالثة.json","path":"./علوم الحديث/3- الوحدة الثالثة.json","title":"بنك أسئلة الوحدة الثالثة","type":"multiple_choice","questions":61,"essayQuestions":0},
-          {"name":"4- الوحدة الرابعة.json","path":"./علوم الحديث/4- الوحدة الرابعة.json","title":"بنك أسئلة الوحدة الرابعة","type":"multiple_choice","questions":80,"essayQuestions":0},
-          {"name":"5- الوحدة الخامسة.json","path":"./علوم الحديث/5- الوحدة الخامسة.json","title":"بنك أسئلة الوحدة الخامسة","type":"multiple_choice","questions":52,"essayQuestions":0},
-          {"name":"6- الوحدة السادسة.json","path":"./علوم الحديث/6- الوحدة السادسة.json","title":"بنك أسئلة الوحدة السادسة","type":"multiple_choice","questions":50,"essayQuestions":0},
-          {"name":"7- الوحدة السابعة.json","path":"./علوم الحديث/7- الوحدة السابعة.json","title":"بنك أسئلة الوحدة السابعة","type":"multiple_choice","questions":120,"essayQuestions":0},
-          {"name":"8- الوحدة الثامنة.json","path":"./علوم الحديث/8- الوحدة الثامنة.json","title":"بنك أسئلة الوحدة الثامنة","type":"multiple_choice","questions":50,"essayQuestions":0},
-          {"name":"9- الوحدة التاسعة.json","path":"./علوم الحديث/9- الوحدة التاسعة.json","title":"بنك أسئلة الوحدة التاسعة","type":"multiple_choice","questions":56,"essayQuestions":0}
+          { "name": "1- الوحدة الأولى.json", "path": "./علوم الحديث/1- الوحدة الأولى.json", "title": "بنك أسئلة الوحدة الأولى", "type": "multiple_choice", "questions": 50, "essayQuestions": 0 },
+          { "name": "2- الوحدة الثانية.json", "path": "./علوم الحديث/2- الوحدة الثانية.json", "title": "بنك أسئلة الوحدة الثانية", "type": "multiple_choice", "questions": 133, "essayQuestions": 0 },
+          { "name": "3- الوحدة الثالثة.json", "path": "./علوم الحديث/3- الوحدة الثالثة.json", "title": "بنك أسئلة الوحدة الثالثة", "type": "multiple_choice", "questions": 61, "essayQuestions": 0 },
+          { "name": "4- الوحدة الرابعة.json", "path": "./علوم الحديث/4- الوحدة الرابعة.json", "title": "بنك أسئلة الوحدة الرابعة", "type": "multiple_choice", "questions": 80, "essayQuestions": 0 },
+          { "name": "5- الوحدة الخامسة.json", "path": "./علوم الحديث/5- الوحدة الخامسة.json", "title": "بنك أسئلة الوحدة الخامسة", "type": "multiple_choice", "questions": 52, "essayQuestions": 0 },
+          { "name": "6- الوحدة السادسة.json", "path": "./علوم الحديث/6- الوحدة السادسة.json", "title": "بنك أسئلة الوحدة السادسة", "type": "multiple_choice", "questions": 50, "essayQuestions": 0 },
+          { "name": "7- الوحدة السابعة.json", "path": "./علوم الحديث/7- الوحدة السابعة.json", "title": "بنك أسئلة الوحدة السابعة", "type": "multiple_choice", "questions": 120, "essayQuestions": 0 },
+          { "name": "8- الوحدة الثامنة.json", "path": "./علوم الحديث/8- الوحدة الثامنة.json", "title": "بنك أسئلة الوحدة الثامنة", "type": "multiple_choice", "questions": 50, "essayQuestions": 0 },
+          { "name": "9- الوحدة التاسعة.json", "path": "./علوم الحديث/9- الوحدة التاسعة.json", "title": "بنك أسئلة الوحدة التاسعة", "type": "multiple_choice", "questions": 56, "essayQuestions": 0 }
         ]
       },
       {
         "name": "علوم القران الكريم",
         "files": [
-          {"name":"2- بنك الفصل الثاني علوم القران.json","path":"./علوم القران الكريم/2- بنك الفصل الثاني علوم القران.json","title":"بنك أسئلة الفصل الثاني: معنى علوم القرآن","type":"multiple_choice","questions":50,"essayQuestions":0},
-          {"name":"3- بنك الفصل الثالث علوم القران.json","path":"./علوم القران الكريم/3- بنك الفصل الثالث علوم القران.json","title":"بنك أسئلة الفصل الثالث: الوحي","type":"multiple_choice","questions":80,"essayQuestions":0},
-          {"name":"5- بنك الفصل الخامس علوم القران.json","path":"./علوم القران الكريم/5- بنك الفصل الخامس علوم القران.json","title":"بنك أسئلة الفصل الخامس: علم المناسبات في القرآن الكريم","type":"multiple_choice","questions":64,"essayQuestions":0},
-          {"name":"6- بنك الفصل السادس علوم القران.json","path":"./علوم القران الكريم/6- بنك الفصل السادس علوم القران.json","title":"بنك أسئلة الفصل السادس نزول القرآن الكريم","type":"multiple_choice","questions":54,"essayQuestions":0},
-          {"name":"7- بنك الفصل السابع علوم القران.json","path":"./علوم القران الكريم/7- بنك الفصل السابع علوم القران.json","title":"بنك أسئلة الفصل السابع: أول ما نزل وآخر ما نزل","type":"multiple_choice","questions":50,"essayQuestions":0},
-          {"name":"8- بنك الفصل الثامن علوم القران.json","path":"./علوم القران الكريم/8- بنك الفصل الثامن علوم القران.json","title":"بنك أسئلة الفصل الثامن: جمع القرآن الكريم","type":"multiple_choice","questions":58,"essayQuestions":0},
-          {"name":"9- بنك الفصل التاسع علوم القران.json","path":"./علوم القران الكريم/9- بنك الفصل التاسع علوم القران.json","title":"بنك أسئلة الفصل التاسع: أسباب النزول","type":"multiple_choice","questions":115,"essayQuestions":0},
-          {"name":"10- بنك الفصل العاشر علوم القران.json","path":"./علوم القران الكريم/10- بنك الفصل العاشر علوم القران.json","title":"بنك أسئلة الفصل العاشر: المكي والمدني","type":"multiple_choice","questions":50,"essayQuestions":0},
-          {"name":"11- بنك الفصل الحادي عشر علوم القران.json","path":"./علوم القران الكريم/11- بنك الفصل الحادي عشر علوم القران.json","title":"بنك أسئلة الفصل الحادي عشر: رسم المصحف","type":"multiple_choice","questions":50,"essayQuestions":0},
-          {"name":"12- بنك الفصل الثاني عشر علوم القران.json","path":"./علوم القران الكريم/12- بنك الفصل الثاني عشر علوم القران.json","title":"بنك أسئلة الفصل الثاني عشر: المحكم والمتشابه","type":"multiple_choice","questions":52,"essayQuestions":0},
-          {"name":"13- بنك الفصل الثالث عشر علوم القران.json","path":"./علوم القران الكريم/13- بنك الفصل الثالث عشر علوم القران.json","title":"بنك أسئلة الفصل الثالث عشر الناسخ والمنسوخ","type":"multiple_choice","questions":65,"essayQuestions":0},
-          {"name":"14- بنك الفصل الرابع عشر علوم القران.json","path":"./علوم القران الكريم/14- بنك الفصل الرابع عشر علوم القران.json","title":"بنك أسئلة الفصل الرابع عشر: الأحرف السبعة","type":"multiple_choice","questions":110,"essayQuestions":0},
-          {"name":"15- بنك الفصل الخامس عشر علوم القران.json","path":"./علوم القران الكريم/15- بنك الفصل الخامس عشر علوم القران.json","title":"بنك أسئلة الفصل الخامس عشر: القراءات القرآنية","type":"multiple_choice","questions":85,"essayQuestions":0}
+          { "name": "2- بنك الفصل الثاني علوم القران.json", "path": "./علوم القران الكريم/2- بنك الفصل الثاني علوم القران.json", "title": "بنك أسئلة الفصل الثاني: معنى علوم القرآن", "type": "multiple_choice", "questions": 50, "essayQuestions": 0 },
+          { "name": "3- بنك الفصل الثالث علوم القران.json", "path": "./علوم القران الكريم/3- بنك الفصل الثالث علوم القران.json", "title": "بنك أسئلة الفصل الثالث: الوحي", "type": "multiple_choice", "questions": 80, "essayQuestions": 0 },
+          { "name": "5- بنك الفصل الخامس علوم القران.json", "path": "./علوم القران الكريم/5- بنك الفصل الخامس علوم القران.json", "title": "بنك أسئلة الفصل الخامس: علم المناسبات في القرآن الكريم", "type": "multiple_choice", "questions": 64, "essayQuestions": 0 },
+          { "name": "6- بنك الفصل السادس علوم القران.json", "path": "./علوم القران الكريم/6- بنك الفصل السادس علوم القران.json", "title": "بنك أسئلة الفصل السادس نزول القرآن الكريم", "type": "multiple_choice", "questions": 54, "essayQuestions": 0 },
+          { "name": "7- بنك الفصل السابع علوم القران.json", "path": "./علوم القران الكريم/7- بنك الفصل السابع علوم القران.json", "title": "بنك أسئلة الفصل السابع: أول ما نزل وآخر ما نزل", "type": "multiple_choice", "questions": 50, "essayQuestions": 0 },
+          { "name": "8- بنك الفصل الثامن علوم القران.json", "path": "./علوم القران الكريم/8- بنك الفصل الثامن علوم القران.json", "title": "بنك أسئلة الفصل الثامن: جمع القرآن الكريم", "type": "multiple_choice", "questions": 58, "essayQuestions": 0 },
+          { "name": "9- بنك الفصل التاسع علوم القران.json", "path": "./علوم القران الكريم/9- بنك الفصل التاسع علوم القران.json", "title": "بنك أسئلة الفصل التاسع: أسباب النزول", "type": "multiple_choice", "questions": 115, "essayQuestions": 0 },
+          { "name": "10- بنك الفصل العاشر علوم القران.json", "path": "./علوم القران الكريم/10- بنك الفصل العاشر علوم القران.json", "title": "بنك أسئلة الفصل العاشر: المكي والمدني", "type": "multiple_choice", "questions": 50, "essayQuestions": 0 },
+          { "name": "11- بنك الفصل الحادي عشر علوم القران.json", "path": "./علوم القران الكريم/11- بنك الفصل الحادي عشر علوم القران.json", "title": "بنك أسئلة الفصل الحادي عشر: رسم المصحف", "type": "multiple_choice", "questions": 50, "essayQuestions": 0 },
+          { "name": "12- بنك الفصل الثاني عشر علوم القران.json", "path": "./علوم القران الكريم/12- بنك الفصل الثاني عشر علوم القران.json", "title": "بنك أسئلة الفصل الثاني عشر: المحكم والمتشابه", "type": "multiple_choice", "questions": 52, "essayQuestions": 0 },
+          { "name": "13- بنك الفصل الثالث عشر علوم القران.json", "path": "./علوم القران الكريم/13- بنك الفصل الثالث عشر علوم القران.json", "title": "بنك أسئلة الفصل الثالث عشر الناسخ والمنسوخ", "type": "multiple_choice", "questions": 65, "essayQuestions": 0 },
+          { "name": "14- بنك الفصل الرابع عشر علوم القران.json", "path": "./علوم القران الكريم/14- بنك الفصل الرابع عشر علوم القران.json", "title": "بنك أسئلة الفصل الرابع عشر: الأحرف السبعة", "type": "multiple_choice", "questions": 110, "essayQuestions": 0 },
+          { "name": "15- بنك الفصل الخامس عشر علوم القران.json", "path": "./علوم القران الكريم/15- بنك الفصل الخامس عشر علوم القران.json", "title": "بنك أسئلة الفصل الخامس عشر: القراءات القرآنية", "type": "multiple_choice", "questions": 85, "essayQuestions": 0 }
         ]
       },
       {
         "name": "علوم عسكرية",
         "files": [
-          {"name":"بنك أسئلة امتحان شامل العلوم العسكرية مادة المد.json","path":"./علوم عسكرية/بنك أسئلة امتحان شامل العلوم العسكرية مادة المد.json","title":"بنك أسئلة امتحان شامل العلوم العسكرية مادة المد","type":"multiple_choice","questions":180,"essayQuestions":0}
+          { "name": "بنك أسئلة امتحان شامل العلوم العسكرية مادة المد.json", "path": "./علوم عسكرية/بنك أسئلة امتحان شامل العلوم العسكرية مادة المد.json", "title": "بنك أسئلة امتحان شامل العلوم العسكرية مادة المد", "type": "multiple_choice", "questions": 180, "essayQuestions": 0 }
         ]
       },
       {
         "name": "فقه الاحوال الشخصية 1 - الزواج والطلاق",
         "files": [
-          {"name":"1- بنك الباب الاول.json","path":"./فقه الاحوال الشخصية 1 - الزواج والطلاق/1- بنك الباب الاول.json","title":"الباب الاول: أحكام الخطبة وعقد الزواج في الفقه والقانون","type":"essay","questions":94,"essayQuestions":94},
-          {"name":"2- بنك الباب الثاني.json","path":"./فقه الاحوال الشخصية 1 - الزواج والطلاق/2- بنك الباب الثاني.json","title":"الباب الثاني: أنواع الزواج وأحكامه (الصحيح، الباطل، الفاسد، والعرفي) والاشتراط في العقد","type":"essay","questions":52,"essayQuestions":52},
-          {"name":"3- بنك الباب الثالث.json","path":"./فقه الاحوال الشخصية 1 - الزواج والطلاق/3- بنك الباب الثالث.json","title":"الباب الثالث: آثار عقد الزواج (المهر، النفقة، المسكن، وحسن العشرة)","type":"essay","questions":70,"essayQuestions":70},
-          {"name":"4- بنك الباب الرابع.json","path":"./فقه الاحوال الشخصية 1 - الزواج والطلاق/4- بنك الباب الرابع.json","title":"الباب الرابع: انحلال عقد الزواج - الطلاق والخلع والتفريق القضائي","type":"essay","questions":85,"essayQuestions":85},
-          {"name":"5- بنك الباب الخامس.json","path":"./فقه الاحوال الشخصية 1 - الزواج والطلاق/5- بنك الباب الخامس.json","title":"الباب الخامس: أحكام العدة ونفقة العدة والتعويض عن الطلاق التعسفي","type":"essay","questions":76,"essayQuestions":76},
-          {"name":"6- بنك الباب السادس.json","path":"./فقه الاحوال الشخصية 1 - الزواج والطلاق/6- بنك الباب السادس.json","title":"الباب السادس: حقوق الأولاد والأقارب (النسب، الرضاع، الحضانة، والنفقات)","type":"essay","questions":64,"essayQuestions":64},
-          {"name":"7- بنك الباب السابع.json","path":"./فقه الاحوال الشخصية 1 - الزواج والطلاق/7- بنك الباب السابع.json","title":"الباب السابع: أحكام الأهلية والولاية والوصاية والغياب - قانون 2010","type":"essay","questions":65,"essayQuestions":65}
+          { "name": "1- بنك الباب الاول.json", "path": "./فقه الاحوال الشخصية 1 - الزواج والطلاق/1- بنك الباب الاول.json", "title": "الباب الاول: أحكام الخطبة وعقد الزواج في الفقه والقانون", "type": "essay", "questions": 94, "essayQuestions": 94 },
+          { "name": "2- بنك الباب الثاني.json", "path": "./فقه الاحوال الشخصية 1 - الزواج والطلاق/2- بنك الباب الثاني.json", "title": "الباب الثاني: أنواع الزواج وأحكامه (الصحيح، الباطل، الفاسد، والعرفي) والاشتراط في العقد", "type": "essay", "questions": 52, "essayQuestions": 52 },
+          { "name": "3- بنك الباب الثالث.json", "path": "./فقه الاحوال الشخصية 1 - الزواج والطلاق/3- بنك الباب الثالث.json", "title": "الباب الثالث: آثار عقد الزواج (المهر، النفقة، المسكن، وحسن العشرة)", "type": "essay", "questions": 70, "essayQuestions": 70 },
+          { "name": "4- بنك الباب الرابع.json", "path": "./فقه الاحوال الشخصية 1 - الزواج والطلاق/4- بنك الباب الرابع.json", "title": "الباب الرابع: انحلال عقد الزواج - الطلاق والخلع والتفريق القضائي", "type": "essay", "questions": 85, "essayQuestions": 85 },
+          { "name": "5- بنك الباب الخامس.json", "path": "./فقه الاحوال الشخصية 1 - الزواج والطلاق/5- بنك الباب الخامس.json", "title": "الباب الخامس: أحكام العدة ونفقة العدة والتعويض عن الطلاق التعسفي", "type": "essay", "questions": 76, "essayQuestions": 76 },
+          { "name": "6- بنك الباب السادس.json", "path": "./فقه الاحوال الشخصية 1 - الزواج والطلاق/6- بنك الباب السادس.json", "title": "الباب السادس: حقوق الأولاد والأقارب (النسب، الرضاع، الحضانة، والنفقات)", "type": "essay", "questions": 64, "essayQuestions": 64 },
+          { "name": "7- بنك الباب السابع.json", "path": "./فقه الاحوال الشخصية 1 - الزواج والطلاق/7- بنك الباب السابع.json", "title": "الباب السابع: أحكام الأهلية والولاية والوصاية والغياب - قانون 2010", "type": "essay", "questions": 65, "essayQuestions": 65 }
         ]
       },
       {
         "name": "فقه العبادات 1 - الطهارة والصلاة",
         "files": [
-          {"name":"1- بنك كتاب الطهارة.json","path":"./فقه العبادات 1 - الطهارة والصلاة/1- بنك كتاب الطهارة.json","title":"بنك كتاب الطهارة","type":"essay","questions":104,"essayQuestions":104},
-          {"name":"2- بنك كتاب الصلاة.json","path":"./فقه العبادات 1 - الطهارة والصلاة/2- بنك كتاب الصلاة.json","title":"بنك كتاب الصلاة","type":"essay","questions":277,"essayQuestions":277}
+          { "name": "1- بنك كتاب الطهارة.json", "path": "./فقه العبادات 1 - الطهارة والصلاة/1- بنك كتاب الطهارة.json", "title": "بنك كتاب الطهارة", "type": "essay", "questions": 104, "essayQuestions": 104 },
+          { "name": "2- بنك كتاب الصلاة.json", "path": "./فقه العبادات 1 - الطهارة والصلاة/2- بنك كتاب الصلاة.json", "title": "بنك كتاب الصلاة", "type": "essay", "questions": 277, "essayQuestions": 277 }
         ]
       }
     ];
@@ -880,7 +957,7 @@
           showToast("هذا البنك لا يحتوي على أسئلة.");
           return;
         }
-        state.bank = {...bank, title: data.title || bank.title, type: data.type || bank.type};
+        state.bank = { ...bank, title: data.title || bank.title, type: data.type || bank.type };
         state.index = 0;
         state.answers = {};
         state.mode = "standard";
@@ -993,16 +1070,16 @@
       return `
         <div class="options">
           ${question.options.map((option, index) => {
-            const isCorrect = index === question.correctAnswer;
-            const isWrong = isInstant && isAnswered && answer === index && !isCorrect;
-            const className = [
-              "option",
-              answer === index ? "selected" : "",
-              isInstant && isAnswered && isCorrect ? "correct" : "",
-              isWrong ? "wrong" : ""
-            ].filter(Boolean).join(" ");
-            return `<button class="${className}" type="button" onclick="selectOption(${index})" ${isInstant && isAnswered ? "disabled" : ""}>${option}</button>`;
-          }).join("")}
+        const isCorrect = index === question.correctAnswer;
+        const isWrong = isInstant && isAnswered && answer === index && !isCorrect;
+        const className = [
+          "option",
+          answer === index ? "selected" : "",
+          isInstant && isAnswered && isCorrect ? "correct" : "",
+          isWrong ? "wrong" : ""
+        ].filter(Boolean).join(" ");
+        return `<button class="${className}" type="button" onclick="selectOption(${index})" ${isInstant && isAnswered ? "disabled" : ""}>${option}</button>`;
+      }).join("")}
         </div>
       `;
     }
@@ -1116,4 +1193,5 @@
     renderCourses();
   </script>
 </body>
+
 </html>
