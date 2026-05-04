@@ -374,6 +374,17 @@
       background: var(--quiz-btn-hover);
     }
 
+    .btn.danger {
+      color: #fff;
+      background: var(--danger);
+    }
+
+    .btn.selected {
+      box-shadow: 0 0 0 3px var(--accent-soft);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
     .btn.secondary {
       color: var(--accent-strong);
       border-color: var(--border);
@@ -879,7 +890,12 @@
         state.complete = false;
         $("#quizModal").classList.add("active");
         document.body.classList.add("quiz-open");
-        renderModeSelection();
+        if (state.questions.every(isEssayQuestion)) {
+          state.mode = "essay";
+          renderQuestion();
+        } else {
+          renderModeSelection();
+        }
       } catch (error) {
         console.error(error);
         showToast("تعذر تحميل ملف البنك.");
@@ -891,7 +907,20 @@
     }
 
     function renderScorePill() {
-      return `<span class="pill score-pill">النقاط: ${state.score}</span>`;
+      return `<span class="pill score-pill">النقاط: ${calculateScore()}</span>`;
+    }
+
+    function shouldShowLiveScore() {
+      return state.mode === "instant" || state.mode === "essay";
+    }
+
+    function calculateScore() {
+      return state.questions.reduce((total, question) => {
+        const answer = state.answers[question.id];
+        if (answer === undefined) return total;
+        if (isEssayQuestion(question)) return total + (answer === 1 ? 1 : 0);
+        return total + (answer === question.correctAnswer ? 1 : 0);
+      }, 0);
     }
 
     function renderModeSelection() {
@@ -900,22 +929,21 @@
         <div class="mode-selection">
           <div class="meta">
             <span class="pill">${state.questions.length} سؤال</span>
-            ${renderScorePill()}
           </div>
           <h2>اختر طريقة التدريب</h2>
-          <button class="mode-card" type="button" onclick="startQuiz('standard')">
-            <strong>الوضع العادي</strong>
-            <span>اختر الإجابة ويمكنك رؤية التصحيح، ثم انتقل للسؤال التالي.</span>
-          </button>
           <button class="mode-card" type="button" onclick="startQuiz('instant')">
             <strong>الوضع الفوري</strong>
-            <span>تظهر النتيجة مباشرة عند اختيار الإجابة، والنقاط تزيد فورًا عند الإجابة الصحيحة.</span>
+            <span>اختر إجابة واحدة، تظهر النتيجة فورًا، ولا يمكنك تغييرها بعد الاختيار.</span>
+          </button>
+          <button class="mode-card" type="button" onclick="startQuiz('standard')">
+            <strong>الوضع العادي</strong>
+            <span>اختر إجابتك ويمكنك تغييرها، ولا تظهر الصحة أو النقاط إلا عند إنهاء الاختبار.</span>
           </button>
         </div>
       `;
       $("#quizFoot").innerHTML = `
         <button class="btn ghost" type="button" onclick="closeQuiz()">إغلاق</button>
-        ${renderScorePill()}
+        <span class="pill">اختر نمط التدريب</span>
       `;
     }
 
@@ -946,7 +974,7 @@
           <div class="meta">
             <span class="pill">${progress}</span>
             <span class="pill ${essay ? "essay" : ""}">${essay ? "سؤال إنشائي" : "اختيار من متعدد"}</span>
-            ${renderScorePill()}
+            ${shouldShowLiveScore() ? renderScorePill() : ""}
           </div>
           <h2>س ${state.index + 1}: ${question.text}</h2>
           ${essay ? renderEssay(question, answer) : renderOptions(question, answer)}
@@ -955,26 +983,26 @@
 
       $("#quizFoot").innerHTML = `
         <button class="btn ghost" type="button" onclick="prevQuestion()" ${state.index === 0 ? "disabled" : ""}>السابق</button>
-        ${renderScorePill()}
+        ${shouldShowLiveScore() ? renderScorePill() : `<span class="pill">${progress}</span>`}
         <button class="btn primary" type="button" onclick="nextQuestion()">${state.index === state.questions.length - 1 ? "عرض النتيجة" : "التالي"}</button>
       `;
     }
 
     function renderOptions(question, answer) {
+      const isInstant = state.mode === "instant";
+      const isAnswered = answer !== undefined;
       return `
         <div class="options">
           ${question.options.map((option, index) => {
-            const isAnswered = answer !== undefined;
             const isCorrect = index === question.correctAnswer;
-            const isWrong = isAnswered && answer === index && !isCorrect;
-            const selected = answer === index && !isAnswered;
+            const isWrong = isInstant && isAnswered && answer === index && !isCorrect;
             const className = [
               "option",
               answer === index ? "selected" : "",
-              isAnswered && isCorrect ? "correct" : "",
+              isInstant && isAnswered && isCorrect ? "correct" : "",
               isWrong ? "wrong" : ""
             ].filter(Boolean).join(" ");
-            return `<button class="${className}" type="button" onclick="selectOption(${index})">${option}</button>`;
+            return `<button class="${className}" type="button" onclick="selectOption(${index})" ${isInstant && isAnswered ? "disabled" : ""}>${option}</button>`;
           }).join("")}
         </div>
       `;
@@ -988,8 +1016,8 @@
         <div class="answer-box${revealedClass}">${question.modelAnswer || "لا توجد إجابة نموذجية في هذا السؤال."}</div>
         ${state.revealed ? `
           <div class="actions">
-            <button class="btn success" type="button" onclick="gradeEssay(1)" ${evaluated ? "disabled" : ""}>إجابتي صحيحة</button>
-            <button class="btn ghost" type="button" onclick="gradeEssay(0)" ${evaluated ? "disabled" : ""}>إجابتي خاطئة</button>
+            <button class="btn success ${answer === 1 ? "selected" : ""}" type="button" onclick="gradeEssay(1)">إجابتي صحيحة</button>
+            <button class="btn danger ${answer === 0 ? "selected" : ""}" type="button" onclick="gradeEssay(0)">إجابتي خاطئة</button>
           </div>
         ` : ""}
         ${evaluated ? `<span class="pill ${answer === 1 ? "" : "essay"}">${answer === 1 ? "تم احتسابها صحيحة" : "تم احتسابها خاطئة"}</span>` : ""}
@@ -998,9 +1026,8 @@
 
     function selectOption(index) {
       const question = state.questions[state.index];
-      if (state.answers[question.id] !== undefined) return;
+      if (state.mode === "instant" && state.answers[question.id] !== undefined) return;
       state.answers[question.id] = index;
-      if (index === question.correctAnswer) state.score += 1;
       renderQuestion();
     }
 
@@ -1011,9 +1038,7 @@
 
     function gradeEssay(value) {
       const question = state.questions[state.index];
-      if (state.answers[question.id] !== undefined) return;
       state.answers[question.id] = value;
-      if (value === 1) state.score += 1;
       renderQuestion();
     }
 
@@ -1042,12 +1067,13 @@
     }
 
     function renderScore() {
-      const percent = Math.round((state.score / state.questions.length) * 100);
+      const score = calculateScore();
+      const percent = Math.round((score / state.questions.length) * 100);
       $("#quizBody").innerHTML = `
         <div class="score">
           <div class="score-number">${percent}%</div>
           <h2>انتهى التدريب</h2>
-          <p>حصلت على ${state.score} من ${state.questions.length}.</p>
+          <p>حصلت على ${score} من ${state.questions.length}.</p>
         </div>
       `;
       $("#quizFoot").innerHTML = `
