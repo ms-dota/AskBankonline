@@ -8,15 +8,17 @@
   <style>
     :root {
       color-scheme: light;
-      --bg: #f7f8fb;
+      --bg: #ffffff;
       --surface: #ffffff;
-      --surface-soft: #f0f4f8;
-      --text: #111827;
-      --muted: #64748b;
-      --border: #dbe3ec;
-      --accent: #0f766e;
-      --accent-strong: #115e59;
-      --accent-soft: #ccfbf1;
+      --surface-soft: #f0f0f0;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --border: #e0e0e0;
+      --accent: #4a90e2;
+      --accent-strong: #357abd;
+      --accent-soft: rgba(74, 144, 226, .14);
+      --quiz-btn: #2ecc71;
+      --quiz-btn-hover: #27ae60;
       --gold: #b7791f;
       --gold-soft: #fef3c7;
       --danger: #b91c1c;
@@ -28,15 +30,17 @@
 
     [data-theme="dark"] {
       color-scheme: dark;
-      --bg: #10151c;
-      --surface: #17202b;
-      --surface-soft: #202b38;
-      --text: #eef2f7;
-      --muted: #a7b4c5;
-      --border: #314154;
-      --accent: #2dd4bf;
-      --accent-strong: #5eead4;
-      --accent-soft: rgba(45, 212, 191, .12);
+      --bg: #1a1a1a;
+      --surface: #1f1f1f;
+      --surface-soft: #2d2d2d;
+      --text: #ffffff;
+      --muted: #b0b0b0;
+      --border: #404040;
+      --accent: #5ca3ff;
+      --accent-strong: #8bbfff;
+      --accent-soft: rgba(92, 163, 255, .14);
+      --quiz-btn: #27ae60;
+      --quiz-btn-hover: #2ecc71;
       --gold: #fbbf24;
       --gold-soft: rgba(251, 191, 36, .13);
       --danger: #f87171;
@@ -112,8 +116,13 @@
       margin-bottom: 18px;
     }
 
+    body.quiz-open {
+      overflow: hidden;
+      touch-action: none;
+    }
+
     .intro, .toolbar, .course, .modal-card {
-      background: rgba(255, 255, 255, .78);
+      background: var(--surface-soft);
       border: 1px solid var(--border);
       border-radius: 8px;
       box-shadow: var(--shadow);
@@ -123,7 +132,7 @@
     [data-theme="dark"] .toolbar,
     [data-theme="dark"] .course,
     [data-theme="dark"] .modal-card {
-      background: rgba(23, 32, 43, .82);
+      background: var(--surface-soft);
     }
 
     .intro {
@@ -356,6 +365,15 @@
       background: var(--accent);
     }
 
+    .btn.success {
+      color: #fff;
+      background: var(--quiz-btn);
+    }
+
+    .btn.success:hover {
+      background: var(--quiz-btn-hover);
+    }
+
     .btn.secondary {
       color: var(--accent-strong);
       border-color: var(--border);
@@ -383,14 +401,15 @@
       align-items: center;
       justify-content: center;
       padding: 18px;
-      background: rgba(2, 6, 23, .74);
+      background: var(--bg);
     }
 
     .modal.active { display: flex; }
 
     .modal-card {
       width: min(780px, 100%);
-      max-height: 92vh;
+      height: min(92vh, 760px);
+      background: var(--surface);
       display: grid;
       grid-template-rows: auto 1fr auto;
       overflow: hidden;
@@ -419,6 +438,49 @@
     .modal-body {
       padding: 22px;
       overflow: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .score-pill {
+      background: var(--accent);
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .mode-selection {
+      display: grid;
+      gap: 14px;
+    }
+
+    .mode-card {
+      width: 100%;
+      padding: 18px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-soft);
+      color: var(--text);
+      cursor: pointer;
+      text-align: right;
+      transition: border-color .2s, transform .2s, background .2s;
+    }
+
+    .mode-card:hover {
+      border-color: var(--accent);
+      background: var(--surface);
+      transform: translateY(-1px);
+    }
+
+    .mode-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--accent);
+      font-size: 18px;
+    }
+
+    .mode-card span {
+      color: var(--muted);
+      line-height: 1.7;
     }
 
     .question {
@@ -539,6 +601,7 @@
       .actions { width: 100%; }
       .actions .btn { flex: 1; }
       .modal-foot { flex-wrap: wrap; }
+      .modal-card { height: 94vh; }
     }
 
     @media (max-width: 520px) {
@@ -712,7 +775,7 @@
       bank: null,
       index: 0,
       answers: {},
-      mode: "practice",
+      mode: "standard",
       revealed: false,
       score: 0,
       complete: false
@@ -810,11 +873,13 @@
         state.bank = {...bank, title: data.title || bank.title, type: data.type || bank.type};
         state.index = 0;
         state.answers = {};
+        state.mode = "standard";
         state.revealed = false;
         state.score = 0;
         state.complete = false;
         $("#quizModal").classList.add("active");
-        renderQuestion();
+        document.body.classList.add("quiz-open");
+        renderModeSelection();
       } catch (error) {
         console.error(error);
         showToast("تعذر تحميل ملف البنك.");
@@ -823,6 +888,45 @@
 
     function isEssayQuestion(question) {
       return state.bank.type === "essay" || (!question.options.length && Boolean(question.modelAnswer));
+    }
+
+    function renderScorePill() {
+      return `<span class="pill score-pill">النقاط: ${state.score}</span>`;
+    }
+
+    function renderModeSelection() {
+      $("#quizTitle").textContent = state.bank.title;
+      $("#quizBody").innerHTML = `
+        <div class="mode-selection">
+          <div class="meta">
+            <span class="pill">${state.questions.length} سؤال</span>
+            ${renderScorePill()}
+          </div>
+          <h2>اختر طريقة التدريب</h2>
+          <button class="mode-card" type="button" onclick="startQuiz('standard')">
+            <strong>الوضع العادي</strong>
+            <span>اختر الإجابة ويمكنك رؤية التصحيح، ثم انتقل للسؤال التالي.</span>
+          </button>
+          <button class="mode-card" type="button" onclick="startQuiz('instant')">
+            <strong>الوضع الفوري</strong>
+            <span>تظهر النتيجة مباشرة عند اختيار الإجابة، والنقاط تزيد فورًا عند الإجابة الصحيحة.</span>
+          </button>
+        </div>
+      `;
+      $("#quizFoot").innerHTML = `
+        <button class="btn ghost" type="button" onclick="closeQuiz()">إغلاق</button>
+        ${renderScorePill()}
+      `;
+    }
+
+    function startQuiz(mode) {
+      state.mode = mode;
+      state.index = 0;
+      state.answers = {};
+      state.revealed = false;
+      state.score = 0;
+      state.complete = false;
+      renderQuestion();
     }
 
     function renderQuestion() {
@@ -842,6 +946,7 @@
           <div class="meta">
             <span class="pill">${progress}</span>
             <span class="pill ${essay ? "essay" : ""}">${essay ? "سؤال إنشائي" : "اختيار من متعدد"}</span>
+            ${renderScorePill()}
           </div>
           <h2>س ${state.index + 1}: ${question.text}</h2>
           ${essay ? renderEssay(question, answer) : renderOptions(question, answer)}
@@ -850,7 +955,7 @@
 
       $("#quizFoot").innerHTML = `
         <button class="btn ghost" type="button" onclick="prevQuestion()" ${state.index === 0 ? "disabled" : ""}>السابق</button>
-        <span class="pill">${progress}</span>
+        ${renderScorePill()}
         <button class="btn primary" type="button" onclick="nextQuestion()">${state.index === state.questions.length - 1 ? "عرض النتيجة" : "التالي"}</button>
       `;
     }
@@ -881,10 +986,12 @@
       return `
         <button class="btn secondary" type="button" onclick="revealEssayAnswer()" ${state.revealed ? "disabled" : ""}>إظهار الإجابة النموذجية</button>
         <div class="answer-box${revealedClass}">${question.modelAnswer || "لا توجد إجابة نموذجية في هذا السؤال."}</div>
-        <div class="actions">
-          <button class="btn primary" type="button" onclick="gradeEssay(1)" ${!state.revealed || evaluated ? "disabled" : ""}>إجابتي صحيحة</button>
-          <button class="btn ghost" type="button" onclick="gradeEssay(0)" ${!state.revealed || evaluated ? "disabled" : ""}>إجابتي خاطئة</button>
-        </div>
+        ${state.revealed ? `
+          <div class="actions">
+            <button class="btn success" type="button" onclick="gradeEssay(1)" ${evaluated ? "disabled" : ""}>إجابتي صحيحة</button>
+            <button class="btn ghost" type="button" onclick="gradeEssay(0)" ${evaluated ? "disabled" : ""}>إجابتي خاطئة</button>
+          </div>
+        ` : ""}
         ${evaluated ? `<span class="pill ${answer === 1 ? "" : "essay"}">${answer === 1 ? "تم احتسابها صحيحة" : "تم احتسابها خاطئة"}</span>` : ""}
       `;
     }
@@ -960,6 +1067,7 @@
 
     function closeQuiz() {
       $("#quizModal").classList.remove("active");
+      document.body.classList.remove("quiz-open");
     }
 
     function applyTheme(theme) {
@@ -979,7 +1087,7 @@
       if (event.key === "Escape") closeQuiz();
     });
 
-    applyTheme(localStorage.getItem("askbank-theme") || "light");
+    applyTheme(localStorage.getItem("askbank-theme") || "dark");
     renderCourses();
   </script>
 </body>
