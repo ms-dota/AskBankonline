@@ -817,7 +817,7 @@
         visibleCourses += 1;
 
         const questionCount = files.reduce((sum, file) => sum + file.questions, 0);
-        const openClass = term || visibleCourses === 1 ? " open" : "";
+        const openClass = term ? " open" : "";
         const items = files.map(file => `
           <article class="bank">
             <div class="bank-main">
